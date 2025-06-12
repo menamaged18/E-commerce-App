@@ -12,23 +12,25 @@ interface Iprops {
 function Card({imagePath, title, discription, price, category}: Iprops) {
   return (
     <div className="p-3 min-h-70 w-60 shadow-lg rounded-xl flex flex-col justify-center border-amber-950">
-        <Image
-            src={imagePath}
-            alt="card image"
-            width={210}
-            height={100}
-            className="rounded-lg max-h-30 min-w-auto"
-        />
+        <div className="w-auto max-h-30">
+            <Image
+                src={imagePath}
+                alt="card image"
+                width={210}
+                height={100}
+                className="rounded-lg max-h-30 min-h-30 min-w-auto"
+            />            
+        </div>
 
-        <div className="pt-1">
+        <div className="pt-1 min-h-20">
             <h1 className="font-bold">{title}</h1>
             <p className="pt-1">{discription}</p>
         </div>
 
-        <div className="flex flex-row gap-0.5 pt-3 ">
-            <Circle height={4} width={4} color="blue-500"></Circle>
-            <Circle height={4} width={4} color="red-500"></Circle>
-            <Circle height={4} width={4} color="orange-500"></Circle>
+        <div className="flex flex-row gap-0.5 pt-3">
+            <Circle height={4} width={4} bgColor="bg-blue-500"></Circle>
+            <Circle height={4} width={4} bgColor="bg-red-500"></Circle>
+            <Circle height={4} width={4} bgColor="bg-orange-500"></Circle>
         </div>
 
         <div className="pt-3 flex flex-row justify-between">

@@ -1,5 +1,7 @@
+'use client'
 import Image from "next/image"
-import Circle from "../Circle/Circle"
+import Button from "../UI/Button"
+import { useState } from 'react';
 
 interface Iprops {
     imagePath: string,
@@ -9,52 +11,78 @@ interface Iprops {
     category: string
 }
 
+const colors = [
+    { name: 'Blue', value: 'bg-blue-500' },
+    { name: 'Red', value: 'bg-red-500' },
+    { name: 'Orange', value: 'bg-orange-500' },
+];
+
 function Card({imagePath, title, discription, price, category}: Iprops) {
+  const [selectedColor, setSelectedColor] = useState<string | null>(colors[0].name);
+
   return (
-    <div className="p-3 min-h-70 w-60 shadow-lg rounded-xl flex flex-col justify-center border-amber-950">
-        <div className="w-auto max-h-30">
-            <Image
-                src={imagePath}
-                alt="card image"
-                width={210}
-                height={100}
-                className="rounded-lg max-h-30 min-h-30 min-w-auto"
-            />            
+    <div className="container p-3 h-[350px] w-60 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl">
+      {/* Image section */}
+        <div className="h-40 w-full overflow-hidden rounded-lg">
+        <Image
+            src={imagePath}
+            alt="card image"
+            width={210}
+            height={160}
+            className="w-full h-full object-cover transform transition duration-500 hover:scale-110"
+        />            
         </div>
 
-        <div className="pt-1 min-h-20">
-            <h1 className="font-bold">{title}</h1>
-            <p className="pt-1">{discription}</p>
+      {/* Title section */}
+      <div className="pt-1">
+        <h1 className="font-bold text-lg transition duration-300 hover:text-blue-500">{title}</h1>
+      </div>
+
+      {/* Description section */}
+      <div className="pt-1 h-24 overflow-hidden">
+        <p className="pt-1 text-sm line-clamp-3">{discription}</p>
+      </div>
+
+      {/* Color options section */}
+      <div className="flex flex-row gap-0.5">
+        {colors.map((color, index) => (
+          <div
+            key={index}
+            className={`w-4 h-4 ${color.value} rounded-full cursor-pointer border-2 transform transition duration-200 hover:scale-125 ${
+              selectedColor === color.name ? 'border-black' : 'border-transparent'
+            }`}
+            onClick={() => setSelectedColor(color.name)}
+          />
+        ))}
+      </div>
+
+      {/* Price and category section */}
+      <div className="flex flex-row justify-between pt-3">
+        <h2 className="text-blue-500 font-bold transition duration-300 hover:text-blue-700">{price} $</h2>
+        <div className="flex flex-row gap-1">
+          <Image 
+            src={imagePath}
+            alt="Category image"
+            height={100}
+            width={100}
+            className="rounded-full h-8 w-8 transition duration-300 hover:opacity-75"
+          />
+          <p className="transition duration-300 hover:text-gray-500">{category}</p>
         </div>
+      </div>
 
-        <div className="flex flex-row gap-0.5 pt-3">
-            <Circle height={4} width={4} bgColor="bg-blue-500"></Circle>
-            <Circle height={4} width={4} bgColor="bg-red-500"></Circle>
-            <Circle height={4} width={4} bgColor="bg-orange-500"></Circle>
-        </div>
-
-        <div className="pt-3 flex flex-row justify-between">
-            <h2 className="text-blue-500">{price} $</h2>
-            <div className="flex flex-row gap-1">
-                <Image 
-                    src={imagePath}
-                    alt="Category image"
-                    height={100}
-                    width={100}
-                    className="rounded-full h-8 w-8"
-                />
-                <p>{category}</p>
-            </div>
-
-        </div>
-
-        <div className="flex flex-row gap-2 pt-3 ">
-            <button className="rounded-md bg-blue-500 flex-1 h-10 hover:bg-blue-600">Edit</button>
-            <button className="rounded-md bg-red-500 flex-1 h-10 hover:bg-red-600">Remove</button>
-        </div>
-
+      {/* Buttons section */}
+      <div className="flex flex-row gap-2 text-white pt-3 mt-auto">
+        <Button className="bg-blue-600  hover:bg-blue-700 transition duration-300">Edit</Button>
+        <Button className="bg-red-600 hover:bg-red-700 transition duration-300">Remove</Button>
+      </div>
     </div>
-  )
+  );
 }
 
 export default Card
+
+
+
+
+// max-h-30 min-h-30 min-w-auto

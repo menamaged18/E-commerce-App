@@ -1,22 +1,31 @@
-import Card from "../../components/Card/Card";
+"use client"
+import { useEffect } from "react";
+import Card from "../components/Card/Card";
+import Navbar from "../components/NavBar/NavBar";
+import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks"
+import { getAllProducts } from "@/data/reducers/ProductReducers"
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+  const {staticData} = useAppSelector((state) => state.products);
+  // Initial data fetch
+  useEffect(() => {
+      dispatch(getAllProducts());
+  }, [dispatch]);
   return (
-    <div className="p-10 flex flex-row flex-wrap gap-3 justify-center ">
-      <Card 
-        imagePath="/stockImage.jpg" 
-        title="Stock Image"
-        discription="nothing to discribe"
-        price={0.00}
-        category="nothing"
-      />
-      <Card 
-        imagePath="/ferrari.jpeg"
-        title="Ferrari"
-        discription="ferrari car is one of the fastest and prettiest cars in the world"
-        price={2000000}
-        category="cars"
-      />
+    <div className="container mx-auto">
+        <Navbar />
+      
+      {/* <CustomDialog  closedBtitle="Add product"/> */}
+      <div className="p-10 flex flex-row flex-wrap gap-4 justify-center ">
+        {staticData.map((product) => (
+          <Card 
+            key={product.id}
+            product = {product}
+          />
+        ))}
+      </div>    
     </div>
+
   );
 }

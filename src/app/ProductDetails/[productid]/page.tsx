@@ -30,20 +30,18 @@
 // export default Page;
 
 
-// app/products/[productid]/page.tsx
+// app/ProductDetails/[productid]/page.tsx
 import { Metadata } from "next";
 import { fetchProductById } from '@/utils/product';
-import PageData from "./PageData";
+import PageData from "./PageData"; 
 
 type Props = {
-  params: { productid: string };
+  params: Promise<{ productid: string }>; // Update type to reflect params as a Promise
 };
 
-// Runs on the server before rendering the page
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { productid } = await params;
+  const { productid } = await params; // Await params to access productid
   const productId = Number(productid);
-  // Fetch product data
   const product = await fetchProductById(productId);
 
   return {
@@ -56,8 +54,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ProductPage({ params }: Props) {
-    return (
-      <PageData productid={params.productid} />
+export default async function ProductPage({ params }: Props) {
+  // Fetch the product data on the server
+  const { productid } = await params; // Await params to access productid
+  const productId = Number(productid);
+  return (
+    <PageData productid={productId} />
   );
 }

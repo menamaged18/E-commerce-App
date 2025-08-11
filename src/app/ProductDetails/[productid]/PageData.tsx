@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/Hooks/reduxHooks';
 import { getProductById } from '@/data/reducers/ProductReducers';
 import Image from 'next/image';
 
-export default function PageData({ productid }: { productid: string }) {
+export default function PageData({ productid }: { productid: Number }) {
   const dispatch = useAppDispatch();
   const product = useAppSelector(state => state.products.selectedProduct);
 

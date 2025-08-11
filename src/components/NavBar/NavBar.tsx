@@ -25,6 +25,9 @@ function Navbar() {
 
   return (
     <>
+      {/* Wrapper to maintain space when navbar is fixed */}
+      <div style={{ height: isSticky ? navbarHeight : "auto" }}></div>
+
       <nav
         className={`
           ${isSticky ? "fixed top-0 left-0 right-0 w-full" : "relative mt-6 mx-8 rounded-4xl hover:scale-105"}

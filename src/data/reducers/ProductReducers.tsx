@@ -1,21 +1,25 @@
 // reduxStore/reducers/productSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
-import { Product } from '../../interfaces/types';
+import { Product, ProductsState, SelectedProductState } from '../../interfaces/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import productsJson from './ProductsList.json';
 
 interface intiProducts {
-  staticData: Product[];
-  selectedProduct: Product | null; 
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null | undefined;
+  productsState: ProductsState;
+  selectedProductState: SelectedProductState;
 }
 
 const initialState: intiProducts = {
-  staticData: [],
-  selectedProduct: null,
-  status: 'idle',
-  error: null,
+  productsState: {
+    products: [],
+    status: 'idle',
+    error: null,
+  },
+  selectedProductState: {
+    product: null,
+    status: 'idle',
+    error: null,
+  },
 };
 
 export const getAllProducts = createAsyncThunk(
@@ -51,6 +55,23 @@ export const getProductById = createAsyncThunk(
   }
 });
 
+export const getCategoryProducts = createAsyncThunk('products/getCategoryProducts',  
+  async (cat: string, thunkAPI) => {
+    try{
+      const products = productsJson.products.filter((product)=>{product.category === cat});
+      if(products.length === 0){
+        return thunkAPI.rejectWithValue(`Products with category ${cat} are not found`);
+      }
+      return products;      
+    } catch(error){
+      if (error instanceof Error) {
+        return thunkAPI.rejectWithValue(error.message);
+      } else {
+        return thunkAPI.rejectWithValue('An unknown error occurred');
+      }      
+    }
+});
+
 const productSlice = createSlice({
   name: 'products',
   initialState,
@@ -59,26 +80,37 @@ const productSlice = createSlice({
   extraReducers(builder) {
     builder
     .addCase(getAllProducts.pending, (state) => {
-      state.status = 'loading';
+      state.productsState.status = 'loading';
     })
     .addCase(getAllProducts.rejected, (state, action)=>{
-      state.status = 'failed';
-      state.error = action.error.message;
+      state.productsState.status = 'failed';
+      state.productsState.error = action.error.message;
     })
     .addCase(getAllProducts.fulfilled, (state, action) => {
-      state.status = 'succeeded';
-      state.staticData = action.payload;
+      state.productsState.status = 'succeeded';
+      state.productsState.products = action.payload;
     })
     .addCase(getProductById.pending, (state) => {
-      state.status = "loading";
+      state.selectedProductState.status = "loading";
     })
     .addCase(getProductById.rejected, (state, action)=>{
-      state.status = 'failed';
-      state.error = action.error.message;
+      state.selectedProductState.status = 'failed';
+      state.selectedProductState.error = action.error.message;
     })
     .addCase(getProductById.fulfilled, (state, action) => {
-      state.status = 'succeeded';
-      state.selectedProduct = action.payload;
+      state.selectedProductState.status = 'succeeded';
+      state.selectedProductState.product = action.payload;
+    })
+    .addCase(getCategoryProducts.pending, (state)=>{
+      state.productsState.status = 'loading';
+    })
+    .addCase(getCategoryProducts.rejected, (state, action)=>{
+      state.productsState.status = 'failed';
+      state.productsState.error = action.error.message;
+    })
+    .addCase(getCategoryProducts.fulfilled, (state, action) => {
+      state.productsState.status = 'succeeded';
+      state.productsState.products = action.payload;
     })
   },
 });

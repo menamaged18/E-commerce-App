@@ -7,7 +7,7 @@ import { getAllProducts } from "@/data/reducers/ProductReducers"
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const {staticData} = useAppSelector((state) => state.products);
+  const staticData = useAppSelector((state) => state.products.productsState.products);
   // Initial data fetch
   useEffect(() => {
       dispatch(getAllProducts());

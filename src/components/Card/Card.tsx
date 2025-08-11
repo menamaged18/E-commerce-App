@@ -1,17 +1,13 @@
 'use client'
 import { Product } from "@/interfaces/types";
+import  ActionButtons  from "@/components/ActionButtons/ActionButtons";
 import Image from "next/image"
 import Link from "next/link";
-// import Button from "../UI/Button"
 import { useState } from 'react';
+// import ActionButtons from "../ActionButtons/ActionButtons";
 
 interface Iprops {
-    // imagePath: string,
-    // title: string,
-    // discription: string,
-    // price: number,
-    // category: string
-    product: Product
+  product: Product
 }
 
 const colors = [
@@ -27,17 +23,23 @@ function Card({product}: Iprops) {
     <Link
       href={`/ProductDetails/${product.id}`}
     >
-    <div className="container p-3 h-[350px] w-60 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110">
-      {/* Image section */}
-        <div className="h-40 w-full overflow-hidden rounded-lg">
-        <Image
-            src={product.imagePath}
-            alt="card image"
-            width={210}
-            height={160}
-            className="w-full h-full object-cover transform transition duration-500 hover:scale-110"
-        />            
-        </div>
+    <div className="container p-3 h-[380px] w-70 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110 relative">
+
+    {/* Image section with hover actions */}
+    <div className="h-40 w-full overflow-hidden rounded-lg relative group">
+      <Image
+        src={product.imagePath}
+        alt="card image"
+        width={210}
+        height={160}
+        className="w-full h-full object-cover transform transition duration-500 group-hover:scale-110"
+      />
+      
+      {/* Action buttons that appear on hover */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <ActionButtons  />
+      </div>
+    </div>
 
       {/* Title section */}
       <div className="pt-1">
@@ -76,20 +78,9 @@ function Card({product}: Iprops) {
           <p className="transition duration-300 hover:text-gray-500">{product.category}</p>
         </div>
       </div>
-
-      {/* Buttons section */}
-      {/* <div className="flex flex-row gap-2 text-white pt-3 mt-auto">
-        <Button className="bg-blue-600  hover:bg-blue-700 transition duration-300">Edit</Button>
-        <Button className="bg-red-600 hover:bg-red-700 transition duration-300">Remove</Button>
-      </div> */}
     </div>
     </Link>
   );
 }
 
 export default Card
-
-
-
-
-// max-h-30 min-h-30 min-w-auto

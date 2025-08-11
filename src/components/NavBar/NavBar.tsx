@@ -1,3 +1,8 @@
+// to make this component work wrap it in a: 
+// <div className="container mx-auto max-w-7xl">
+//   <Navbar />
+// </div>
+
 // components/NavBar/NavBar.tsx
 "use client";
 import Link from "next/link";
@@ -20,16 +25,14 @@ function Navbar() {
 
   return (
     <>
-      {isSticky && <div style={{ height: navbarHeight }} />}
       <nav
         className={`
-          ${isSticky ? "fixed top-0 left-0 right-0" : "relative"}
-          bg-gray-900 text-white shadow-sm z-50 transition-all duration-300 ease-in-out max-w-7xl mx-auto
-          ${!isSticky && "mt-4 mx-4 rounded-4xl hover:scale-105"}
+          ${isSticky ? "fixed top-0 left-0 right-0 w-full" : "relative mt-6 mx-8 rounded-4xl hover:scale-105"}
+          bg-gray-900 text-white shadow-sm z-50 transition-all duration-300 ease-in-out 
         `}
         style={{ height: navbarHeight }}
       >
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div className="container px-4 py-3 flex justify-between items-center">
           <Link href="/" className="text-lg font-bold flex items-center space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,11 +119,11 @@ function Navbar() {
             </li>
           </ul>
           <button
-            className="md:hidden flex justify-center w-8 h-8 bg-green-700 hover:bg-green-600 rounded-full"
+            className="md:hidden flex justify-center w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-full"
             onClick={() => setIsOpen(!isOpen)}
           >
             <svg
-              className="w-5 h-5"
+              className="w-5 h-5 my-auto"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -135,7 +138,7 @@ function Navbar() {
           </button>
         </div>
         {isOpen && (
-          <ul className="md:hidden flex flex-col items-center space-y-4 py-4 bg-green-200">
+          <ul className="md:hidden flex flex-col items-center space-y-4 py-4 bg-gray-200 text-black">
             <li>
               <Link
                 href="/"

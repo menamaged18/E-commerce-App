@@ -18,9 +18,9 @@
     },
     {
       "id": 3,
-      "imagePath": "/Cars/ferrari.jpeg",
-      "title": "Ferrari",
-      "description": "Ferrari car is one of the fastest and prettiest cars in the world",
+      "imagePath": "/Cars/ferrari.jpg",
+      "title": "Ferrari la Ferrari",
+      "description": "The Ferrari LaFerrari, whose name means \"The Ferrari\" in Italian, is a limited-production hybrid hypercar and the spiritual successor to the Enzo. It represents the pinnacle of Ferrari's road car technology, combining a naturally aspirated 6.3-liter V12 engine with an electric motor for a total output of 949 hp. This F1-derived HY-KERS hybrid system allows for blistering performance, with a 0-100 km/h time of under 3 seconds and a top speed exceeding 350 km/h (217 mph). Its striking design features active aerodynamics and a lightweight carbon fiber chassis, all aimed at delivering the most extreme performance ever seen in a road-going Ferrari.",
       "price": 2000000,
       "category": "cars"
     },

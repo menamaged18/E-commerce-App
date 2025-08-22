@@ -25,7 +25,7 @@ function Navbar() {
 
   return (
     <>
-      {/* Wrapper to maintain space when navbar is fixed */}
+      {/* Wrapper to maintain space when navbar is fixed **this is very important** */}
       <div style={{ height: isSticky ? navbarHeight : "auto" }}></div>
 
       <nav
@@ -36,7 +36,7 @@ function Navbar() {
         style={{ height: navbarHeight }}
       >
         <div className="container px-4 py-3 flex justify-between items-center">
-          <Link href="/" className="text-lg font-bold flex items-center space-x-2">
+          <Link href="/" className="ml-8 lg:ml-20 text-lg font-bold flex items-center space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-indigo-400"
@@ -76,7 +76,8 @@ function Navbar() {
                 <span>Home</span>
               </Link>
             </li>
-            <li>
+            {/* will be added later if needed */}
+            {/* <li>
               <Link
                 href="/about"
                 className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
@@ -96,6 +97,28 @@ function Navbar() {
                   />
                 </svg>
                 <span>About</span>
+              </Link>
+            </li> */}
+            <li>
+              <Link
+                href="/Favourites"
+                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+                <span>Favourites</span>
               </Link>
             </li>
             <li>

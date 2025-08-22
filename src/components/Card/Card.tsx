@@ -8,6 +8,10 @@ import { useState } from 'react';
 
 interface Iprops {
   product: Product
+  height: number
+  width: number
+  isFav: boolean
+  inCart: boolean
 }
 
 const colors = [
@@ -16,14 +20,20 @@ const colors = [
     { name: 'Orange', value: 'bg-orange-500' },
 ];
 
-function Card({product}: Iprops) {
+function Card({product, height, width, isFav, inCart}: Iprops) {
   const [selectedColor, setSelectedColor] = useState<string | null>(colors[0].name);
 
   return (
     <Link
       href={`/ProductDetails/${product.id}`}
     >
-    <div className="container p-3 h-[380px] w-70 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110 relative">
+    <div 
+      className="container p-3 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110 relative"
+      style={{
+        height: `${height}px`,
+        width: `${width}px` 
+      }}
+      >
 
     {/* Image section with hover actions */}
     <div className="h-40 w-full overflow-hidden rounded-lg relative group">
@@ -37,7 +47,7 @@ function Card({product}: Iprops) {
       
       {/* Action buttons that appear on hover */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <ActionButtons  />
+        <ActionButtons productid={product.id} isFav={isFav} inCart={inCart} />
       </div>
     </div>
 

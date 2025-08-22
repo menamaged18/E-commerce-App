@@ -1,0 +1,3 @@
+tasks that i need to do:
+    1- make a state for favourite products 
+    2- in product details page make the recommeded products shows the favourites and inCart

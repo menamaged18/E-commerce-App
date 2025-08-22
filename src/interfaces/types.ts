@@ -17,4 +17,5 @@ export interface SelectedProductState {
   product: Product | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null | undefined;
+  category: string;
 }

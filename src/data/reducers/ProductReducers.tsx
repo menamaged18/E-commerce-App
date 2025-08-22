@@ -19,6 +19,7 @@ const initialState: intiProducts = {
     product: null,
     status: 'idle',
     error: null,
+    category: "",
   },
 };
 
@@ -55,10 +56,32 @@ export const getProductById = createAsyncThunk(
   }
 });
 
+export const getProductsByIds = createAsyncThunk(
+  'products/getProductsByIds',
+  async (ids: number[], thunkAPI) => {
+    try {
+      const products = ids
+        .map((id) => productsJson.products.find((product) => product.id === id))
+        .filter((product): product is Product => !!product); 
+      
+      if (products.length === 0) {
+        return thunkAPI.rejectWithValue(`No products found for the given IDs`);
+      }
+      return products;
+    } catch (error) {
+      if (error instanceof Error) {
+        return thunkAPI.rejectWithValue(error.message);
+      } else {
+        return thunkAPI.rejectWithValue('An unknown error occurred');
+      }
+    }
+  }
+);
+
 export const getCategoryProducts = createAsyncThunk('products/getCategoryProducts',  
-  async (cat: string, thunkAPI) => {
+  async ({ cat, excludeId }: { cat: string, excludeId: number }, thunkAPI) => {
     try{
-      const products = productsJson.products.filter((product)=>{product.category === cat});
+      const products = productsJson.products.filter((product) => product.category === cat && product.id !== excludeId);
       if(products.length === 0){
         return thunkAPI.rejectWithValue(`Products with category ${cat} are not found`);
       }
@@ -111,6 +134,18 @@ const productSlice = createSlice({
     .addCase(getCategoryProducts.fulfilled, (state, action) => {
       state.productsState.status = 'succeeded';
       state.productsState.products = action.payload;
+    })
+    // getProductsByIds
+    .addCase(getProductsByIds.fulfilled, (state, action)=>{
+      state.productsState.products = action.payload;
+      state.productsState.status = 'succeeded';
+    })
+    .addCase(getProductsByIds.rejected, (state, action) =>{
+      state.productsState.status = "failed";
+      state.productsState.error = action.error.message;
+    })
+    .addCase(getProductsByIds.pending, (state)=>{
+      state.productsState.status = 'loading';
     })
   },
 });

@@ -1,16 +1,22 @@
 // reduxStore/reducers/productSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
-import { Product, ProductsState, SelectedProductState } from '../../interfaces/types';
+import { Product, ProductsState, SelectedProductState, SelectedProductsState } from '../../interfaces/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import productsJson from './ProductsList.json';
 
 interface intiProducts {
   productsState: ProductsState;
   selectedProductState: SelectedProductState;
+  selectedProductsState: SelectedProductsState;
 }
 
 const initialState: intiProducts = {
   productsState: {
+    products: [],
+    status: 'idle',
+    error: null,
+  },
+  selectedProductsState: {
     products: [],
     status: 'idle',
     error: null,
@@ -62,11 +68,8 @@ export const getProductsByIds = createAsyncThunk(
     try {
       const products = ids
         .map((id) => productsJson.products.find((product) => product.id === id))
-        .filter((product): product is Product => !!product); 
-      
-      if (products.length === 0) {
-        return thunkAPI.rejectWithValue(`No products found for the given IDs`);
-      }
+        .filter((product): product is Product => !!product);
+
       return products;
     } catch (error) {
       if (error instanceof Error) {
@@ -77,6 +80,7 @@ export const getProductsByIds = createAsyncThunk(
     }
   }
 );
+
 
 export const getCategoryProducts = createAsyncThunk('products/getCategoryProducts',  
   async ({ cat, excludeId }: { cat: string, excludeId: number }, thunkAPI) => {
@@ -137,15 +141,15 @@ const productSlice = createSlice({
     })
     // getProductsByIds
     .addCase(getProductsByIds.fulfilled, (state, action)=>{
-      state.productsState.products = action.payload;
-      state.productsState.status = 'succeeded';
+      state.selectedProductsState.products = action.payload;
+      state.selectedProductsState.status = 'succeeded';
     })
     .addCase(getProductsByIds.rejected, (state, action) =>{
-      state.productsState.status = "failed";
-      state.productsState.error = action.error.message;
+      state.selectedProductsState.status = "failed";
+      state.selectedProductsState.error = action.error.message;
     })
     .addCase(getProductsByIds.pending, (state)=>{
-      state.productsState.status = 'loading';
+      state.selectedProductsState.status = 'loading';
     })
   },
 });

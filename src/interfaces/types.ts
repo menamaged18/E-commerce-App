@@ -13,6 +13,12 @@ export interface ProductsState {
   error: string | null | undefined;
 }
 
+export interface SelectedProductsState {
+  products: Product[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null | undefined;
+}
+
 export interface SelectedProductState {
   product: Product | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';

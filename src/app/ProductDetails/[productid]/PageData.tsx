@@ -5,17 +5,33 @@ import { getProductById, getCategoryProducts } from "@/data/reducers/ProductRedu
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
 import Card from "@/components/Card/Card";
+import { getFavs, getinCart, addToCart, addToFav} from "@/utils/addTo";
+
 
 export default function PageData({ productid }: { productid: Number }) {
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [inCart, setInCart] = useState<boolean>(false);
+  const favs = getFavs();
+  const incart = getinCart();
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.products.selectedProductState.product);
   const recomendedProducts = useAppSelector((state) => state.products.productsState.products);
 
+  const handleFavBtn = () =>{
+    setIsFavorited(!isFavorited);
+    addToFav(Number(productid));
+  }
+
+  const handleInCartBtn = () =>{
+    setInCart(!isFavorited);
+    addToCart(Number(productid));
+  }
 
   useEffect(() => {
-    dispatch(getProductById(Number(productid)));
+    const nPid = Number(productid);
+    dispatch(getProductById(nPid));
+    setIsFavorited(favs? favs.includes(nPid) : false);
+    setInCart(incart? incart.includes(nPid) : false);
   }, [dispatch, productid]);
 
   useEffect(()=>{
@@ -30,7 +46,6 @@ export default function PageData({ productid }: { productid: Number }) {
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600"></div>
       </div>
   );
-  //  float-left mr-4 mb-4
 
   return (
     <> 
@@ -57,7 +72,7 @@ export default function PageData({ productid }: { productid: Number }) {
           {/* Buttons should also be outside the flex container to wrap correctly */}
           <div className="flex flex-col sm:flex-row gap-4 clear-left justify-center mt-2">
             <button
-              onClick={() => setIsFavorited(!isFavorited)}
+              onClick={handleFavBtn}
               className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 cursor-pointer ${
                 isFavorited
                   ? "bg-red-100 text-red-600 hover:bg-red-200"
@@ -70,7 +85,7 @@ export default function PageData({ productid }: { productid: Number }) {
               {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
             </button>
             <button
-              onClick={() => setInCart(!inCart)}
+              onClick={handleInCartBtn}
               className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 cursor-pointer ${
                 inCart
                   ? "bg-blue-100 text-blue-600 hover:bg-blue-200"
@@ -91,7 +106,10 @@ export default function PageData({ productid }: { productid: Number }) {
         <h2 className="text-2xl font-bold mb-4">Recommended Products</h2>
         <div className="flex flex-row gap-4 p-4">
           {recomendedProducts.map((product) => (
-            <Card key={product.id} product={product} height={250} width={200}></Card>
+            <Card key={product.id} product={product} height={250} width={200}
+              isFav={favs? favs.includes(product.id) : false}
+              inCart={incart? incart.includes(product.id) : false}
+            ></Card>
           ))}
         </div>
       </div>

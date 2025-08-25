@@ -4,7 +4,6 @@ import  ActionButtons  from "@/components/ActionButtons/ActionButtons";
 import Image from "next/image"
 import Link from "next/link";
 import { useState } from 'react';
-// import ActionButtons from "../ActionButtons/ActionButtons";
 
 interface Iprops {
   product: Product
@@ -12,6 +11,8 @@ interface Iprops {
   width: number
   isFav: boolean
   inCart: boolean
+  onFavToggle?: () => void; // new
+  onInCartToggle?: () => void; // new
 }
 
 const colors = [
@@ -20,7 +21,7 @@ const colors = [
     { name: 'Orange', value: 'bg-orange-500' },
 ];
 
-function Card({product, height, width, isFav, inCart}: Iprops) {
+function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggle}: Iprops) {
   const [selectedColor, setSelectedColor] = useState<string | null>(colors[0].name);
 
   return (
@@ -47,7 +48,7 @@ function Card({product, height, width, isFav, inCart}: Iprops) {
       
       {/* Action buttons that appear on hover */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <ActionButtons productid={product.id} isFav={isFav} inCart={inCart} />
+        <ActionButtons productid={product.id} isFav={isFav} inCart={inCart} onFavToggle={onFavToggle} onInCartToggle={onInCartToggle} />
       </div>
     </div>
 

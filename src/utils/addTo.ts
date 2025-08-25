@@ -1,3 +1,4 @@
+// utils.ts
 export const addToFav = (newProductId: number) =>{
     // Retrieve the existing data
     const storedFavs = window.sessionStorage.getItem("fav");

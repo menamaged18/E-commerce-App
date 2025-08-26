@@ -1,7 +1,7 @@
 'use client'
 import { Product } from "@/interfaces/types";
 import  ActionButtons  from "@/components/ActionButtons/ActionButtons";
-import Image from "next/image"
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from 'react';
 

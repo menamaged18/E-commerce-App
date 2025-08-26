@@ -1,3 +1,16 @@
 tasks that i need to do:
     1- make a state for favourite products  --> done
-    2- in product details page make the recommeded products shows the favourites and inCart
+    2- in product details page make the recommeded products shows the favourites and inCart --> done
+    3- Account 
+        3.1 two types of accounts:
+            3.1.1 account for a normal user 
+            3.1.2 account for an admin 
+                
+        3.2 signUp/Login for an admin 
+        3.3 dashboard for the admin (not a priority right now)
+
+         
+
+tasks to do later: 
+    1- in CheckoutSummary component // TODO: Later direct to Payment Page
+    2- display favourites in Cart so that a user can put thier favourite products in the cart directly

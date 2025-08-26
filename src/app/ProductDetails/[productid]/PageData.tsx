@@ -23,7 +23,7 @@ export default function PageData({ productid }: { productid: Number }) {
   }
 
   const handleInCartBtn = () =>{
-    setInCart(!isFavorited);
+    setInCart(!inCart);
     addToCart(Number(productid));
   }
 

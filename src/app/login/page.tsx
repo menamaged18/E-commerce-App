@@ -2,23 +2,24 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-// import { useTypedDispatch, useTypedSelector } from '@/data/store/store';
-// import { userLogin } from '@/data/reducers/User';
+import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks";
+import { loginUser } from '@/data/reducers/user/User';
 import SearchParamsMessage from './SearchParamsMessage';
+import HelpLogin from '@/components/LoginHelp/HelpLogin';
 
 export default function Page() {
   const router = useRouter();
-  // const typedDispatch = useTypedDispatch();
-  // const { status, error, isLoggedIn } = useTypedSelector((s) => s.User);
+  const typedDispatch = useAppDispatch();
+  const { status, error, isLoggedIn } = useAppSelector((s) => s.user);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     router.push('/');
-  //   }
-  // }, [isLoggedIn, router]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push('/');
+    }
+  }, [isLoggedIn, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -26,7 +27,7 @@ export default function Page() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // typedDispatch(userLogin(loginData));
+    typedDispatch(loginUser(loginData));
   };
 
   return (
@@ -48,7 +49,7 @@ export default function Page() {
         </Suspense>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* {status === 'failed' && (
+          {status === 'failed' && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
               <p className="text-red-700 font-medium">{error}</p>
             </div>
@@ -58,7 +59,7 @@ export default function Page() {
             <div className="flex justify-center py-4">
               <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          )} */}
+          )}
 
           <div className="space-y-4">
             <div>
@@ -114,7 +115,7 @@ export default function Page() {
 
           <button
             type="submit"
-            className={`w-full py-3.5 px-4 rounded-lg text-white font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform ${
+            className={`w-full py-3.5 px-4 rounded-lg text-white font-medium cursor-pointer bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform ${
               isFocused ? 'ring-4 ring-blue-200 scale-[0.98]' : 'shadow-md'
             }`}
             onMouseEnter={() => setIsFocused(true)}
@@ -137,6 +138,7 @@ export default function Page() {
             </Link>
           </p>
         </div>
+        <HelpLogin />
       </div>
     </div>
   );

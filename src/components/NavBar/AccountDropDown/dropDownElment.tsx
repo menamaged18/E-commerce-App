@@ -1,21 +1,21 @@
 'use client';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-// import { useTypedDispatch, useTypedSelector } from '@/data/store/store'
-// import { logoutUser } from '@/data/reducers/User';
+import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks";
+import { logoutUser } from '@/data/reducers/user/User';
 
 function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  // const { isLoggedIn } = useTypedSelector((state) => state.User);
-  // const typedDispatch = useTypedDispatch();
+  const { isLoggedIn } = useAppSelector((state) => state.user);
+  const typedDispatch = useAppDispatch();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSignout = () => {
-    // typedDispatch(logoutUser());
+    typedDispatch(logoutUser());
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function NavbarDropdown() {
           className="absolute z-10 mt-2 right-0 font-normal bg-white divide-y divide-gray-200 rounded-lg shadow-md w-32 border border-gray-100 max-w-[calc(100vw-1rem)]" // Adjusted width, added right-0 and max-w
         >
           {/* If the user is not logged in, show Sign-up and Login options */}
-          {/* {!isLoggedIn && ( */}
+          {!isLoggedIn && (
             <ul
               className="py-2 text-sm text-gray-700"
               aria-labelledby="dropdownLargeButton"
@@ -85,9 +85,9 @@ function NavbarDropdown() {
                 </Link>
               </li>
             </ul>
-          {/* )} */}
+          )}
           {/* If the user is logged in, show Sign out option */}
-          {/* {isLoggedIn && (
+          {isLoggedIn && (
             <div className="py-1">
               <button
                 onClick={handleSignout}
@@ -96,7 +96,7 @@ function NavbarDropdown() {
                 Sign out
               </button>
             </div>
-          )} */}
+          )}
         </div>
       )}
     </li>

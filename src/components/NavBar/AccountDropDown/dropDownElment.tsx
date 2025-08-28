@@ -1,12 +1,13 @@
-'use client';
+'use client'; // This directive must be at the very top of the file
+
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks";
+import { useAppSelector, useAppDispatch } from '@/Hooks/reduxHooks';
 import { logoutUser } from '@/data/reducers/user/User';
 
 function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null); 
   const { isLoggedIn } = useAppSelector((state) => state.user);
   const typedDispatch = useAppDispatch();
 
@@ -16,25 +17,25 @@ function NavbarDropdown() {
 
   const handleSignout = () => {
     typedDispatch(logoutUser());
+    setIsOpen(false); // Close the dropdown after signing out
   };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current) { 
-        if (!dropdownRef.current.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [dropdownRef]);
+  }, []); 
 
   return (
-    <li className="relative">
+    <div className="relative">
       <button
         onClick={toggleDropdown}
         className="flex items-center justify-between w-full py-2 px-4 text-white rounded-lg hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 transition-colors duration-200 md:hover:bg-transparent md:border-0 md:hover:text-indigo-600 md:p-0 md:w-auto cursor-pointer"
@@ -60,7 +61,7 @@ function NavbarDropdown() {
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute z-10 mt-2 right-0 font-normal bg-white divide-y divide-gray-200 rounded-lg shadow-md w-32 border border-gray-100 max-w-[calc(100vw-1rem)]" // Adjusted width, added right-0 and max-w
+          className="absolute z-10 mt-2 right-0 font-normal bg-white divide-y divide-gray-200 rounded-lg shadow-md w-32 max-w-[calc(100vw-1rem)]"
         >
           {/* If the user is not logged in, show Sign-up and Login options */}
           {!isLoggedIn && (
@@ -72,6 +73,7 @@ function NavbarDropdown() {
                 <Link
                   href="/signUp"
                   className="block px-4 py-2.5 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200"
+                  onClick={() => setIsOpen(false)} // Close dropdown on click
                 >
                   Sign-up
                 </Link>
@@ -80,6 +82,7 @@ function NavbarDropdown() {
                 <Link
                   href="/login"
                   className="block px-4 py-2.5 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200"
+                  onClick={() => setIsOpen(false)} // Close dropdown on click
                 >
                   Login
                 </Link>
@@ -91,7 +94,7 @@ function NavbarDropdown() {
             <div className="py-1">
               <button
                 onClick={handleSignout}
-                className="w-full block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200 text-left"
+                className="w-full block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200 text-left cursor-pointer"
               >
                 Sign out
               </button>
@@ -99,7 +102,7 @@ function NavbarDropdown() {
           )}
         </div>
       )}
-    </li>
+    </div>
   );
 }
 

@@ -4,7 +4,7 @@
         "ID": 1,
         "Name": "John Doe",
         "Email": "johndoe@example.com",
-        "password" : "Pass#12345",
+        "password" : "Pass",
         "type" : "N"
       },
       {

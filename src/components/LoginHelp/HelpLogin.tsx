@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import DemoAccountDetails from "./DemoAccountDetails";
 
 function HelpLogin() {
   const [isOpened, setIsOpened] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null); // Add type to useRef
 
   const handleToggle = () => {
     setIsOpened(!isOpened);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) // Now contains is recognized
+      ) {
+        setIsOpened(false);
+      }
+    }
+
+    if (isOpened) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpened]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={handleToggle}
         className="fixed right-10 bottom-10 z-50 cursor-pointer 
@@ -27,17 +47,17 @@ function HelpLogin() {
                      transition-transform duration-300 ease-out transform
                      scale-100 opacity-100"
         >
-            <DemoAccountDetails 
-                header="Normal Account"
-                email="johndoe@example.com"
-                password="Pass"
-            />
-            <br />
-            <DemoAccountDetails 
-                header="Admin Account"
-                email="Admin@example.com"
-                password="admin"
-            />
+          <DemoAccountDetails 
+            header="Normal Account"
+            email="johndoe@example.com"
+            password="Pass"
+          />
+          <br />
+          <DemoAccountDetails 
+            header="Admin Account"
+            email="Admin@example.com"
+            password="admin"
+          />
         </div>
       )}
     </div>

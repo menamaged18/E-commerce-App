@@ -1,5 +1,5 @@
 // data/reducers/User.tsx
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import usersList from './usersList.json'
 import { Iuser, initUser } from "@/interfaces/userInterfaces"
 
@@ -11,11 +11,22 @@ interface IIuser {
 }
 
 const initialState: IIuser = {
-    staticData: initUser,  
+    staticData: initUser,
     status: 'idle',
     isLoggedIn: false,
     error: null,
 };
+
+// Async thunk for delayed logout
+export const logoutUserAsync = createAsyncThunk(
+    'users/logoutUserAsync',
+    async (_, { dispatch }) => {
+        // Wait for 3 seconds before dispatching the logout action
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Dispatch the actual reducer action to log out the user
+        dispatch(users.actions.logoutUser());
+    }
+);
 
 const users = createSlice({
     name: 'users',
@@ -47,14 +58,20 @@ const users = createSlice({
             state.isLoggedIn = true;
             state.error = null;
         },
+        // A synchronous action that the async thunk will dispatch
         logoutUser: (state) => {
             state.staticData = initUser;
             state.status = 'idle';
             state.isLoggedIn = false;
             state.error = null;
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(logoutUserAsync.pending, (state) => {
+            state.status = 'loading';
+        });
     }
 });
 
-export const { loginUser, logoutUser } = users.actions;
+export const { loginUser } = users.actions;
 export default users.reducer;

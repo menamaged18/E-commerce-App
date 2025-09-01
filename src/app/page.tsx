@@ -1,7 +1,6 @@
 "use client";
 import { useEffect } from "react";
 import Card from "../components/Card/Card";
-// import Navbar from "../components/NavBar/NavBar";
 import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks";
 import { getAllProducts } from "@/data/reducers/ProductReducers";
 import { getFavs, getinCart} from "@/utils/addTo";
@@ -29,8 +28,7 @@ export default function Home() {
             inCart={incart? incart.includes(product.id) : false}
           />
         ))}
-      </div>    
+      </div>
     </div>
-
   );
 }

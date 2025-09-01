@@ -8,6 +8,9 @@
 import Link from "next/link";
 import NavbarDropdown from "@/components/NavBar/AccountDropDown/dropDownElment"
 import { useState, useEffect } from "react";
+import HomeElement from "./NavBarElements/HomeElement";
+import FavouritesElement from "./NavBarElements/FavouritesElement";
+import CartElement from "./NavBarElements/CartElement";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +29,7 @@ function Navbar() {
 
   return (
     <>
-      {/* Wrapper to maintain space when navbar is fixed **this is very important** */}
+      {/* Wrapper to maintain space when navbar is fixed. --> **this is very important** */}
       <div style={{ height: isSticky ? navbarHeight : "auto" }}></div>
 
       <nav
@@ -56,93 +59,17 @@ function Navbar() {
           </Link>
           <ul className="hidden md:flex items-center space-x-6">
             <li>
-              <Link
-                href="/"
-                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  />
-                </svg>
-                <span>Home</span>
-              </Link>
+              <HomeElement />
             </li>
             {/* will be added later if needed */}
             {/* <li>
-              <Link
-                href="/about"
-                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>About</span>
-              </Link>
+              <AboutElement />
             </li> */}
             <li>
-              <Link
-                href="/Favourites"
-                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
-              >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-                <span>Favourites</span>
-              </Link>
+              <FavouritesElement />
             </li>
             <li>
-              <Link
-                href="/Cart"
-                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H18.6L22 13M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m0-4h18"
-                  />
-                </svg>
-                <span>Cart</span>
-              </Link>
+              <CartElement />
             </li>
             <NavbarDropdown />
           </ul>
@@ -165,74 +92,19 @@ function Navbar() {
             </svg>
           </button>
         </div>
+        {/* Mobile view */}
         {isOpen && (
           <ul className="md:hidden flex flex-col items-center space-y-4 py-4 bg-gray-200 text-black">
             <li>
-              <Link
-                href="/"
-                className="hover:text-green-300 transition duration-300 flex items-center space-x-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  />
-                </svg>
-                <span>Home</span>
-              </Link>
+              <HomeElement />
             </li>
             <li>
-              <Link
-                href="/about"
-                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>About</span>
-              </Link>
+              <FavouritesElement />
             </li>
             <li>
-              <Link
-                href="/contact"
-                className="hover:text-gray-300 transition duration-300 flex items-center space-x-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-                <span>Account</span>
-              </Link>
+              <CartElement />
             </li>
+            <NavbarDropdown />
           </ul>
         )}
       </nav>

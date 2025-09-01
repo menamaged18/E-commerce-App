@@ -54,7 +54,7 @@ function NavbarDropdown() {
         className="flex items-center justify-between w-full py-2 px-4 rounded-lg hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 transition-colors duration-200 md:hover:bg-transparent md:border-0 md:hover:text-indigo-600 md:p-0 md:w-auto cursor-pointer"
       >
         Account
-        <svg className="w-3 h-3 ms-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+        <svg className="w-3 h-3 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
         </svg>
       </button>

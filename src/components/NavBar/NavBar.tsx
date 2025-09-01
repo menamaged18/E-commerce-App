@@ -11,8 +11,12 @@ import { useState, useEffect } from "react";
 import HomeElement from "./NavBarElements/HomeElement";
 import FavouritesElement from "./NavBarElements/FavouritesElement";
 import CartElement from "./NavBarElements/CartElement";
+import {useAppSelector} from "@/Hooks/reduxHooks";
+import AddProductElement from "./NavBarElements/AddProductElement";
 
 function Navbar() {
+  const userType = useAppSelector( (state) => state.user.staticData.type );
+  // console.log(userType)
   const [isOpen, setIsOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const navbarHeight = 64; // Define the height of the navbar
@@ -20,12 +24,36 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
-      setIsSticky(offset > 100);
+      setIsSticky(offset > 64);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const renderNavItems = (userType: string) => {
+    if (userType === "N" || userType === " ") {
+      return (
+        <>
+          <li>
+            <FavouritesElement />
+          </li>
+          <li>
+            <CartElement />
+          </li>
+        </>
+      );
+    } else if (userType === "A") {
+      return (
+        <li>
+          <AddProductElement />
+        </li>
+      );
+    }
+
+    // Return null if no conditions are met to avoid rendering anything.
+    return null;
+  };
 
   return (
     <>
@@ -65,16 +93,11 @@ function Navbar() {
             {/* <li>
               <AboutElement />
             </li> */}
-            <li>
-              <FavouritesElement />
-            </li>
-            <li>
-              <CartElement />
-            </li>
+            {renderNavItems(userType)}
             <NavbarDropdown />
           </ul>
           <button
-            className="md:hidden flex justify-center w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-full"
+            className="md:hidden flex justify-center w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-full cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
           >
             <svg
@@ -98,12 +121,7 @@ function Navbar() {
             <li>
               <HomeElement />
             </li>
-            <li>
-              <FavouritesElement />
-            </li>
-            <li>
-              <CartElement />
-            </li>
+            {renderNavItems(userType)}
             <NavbarDropdown />
           </ul>
         )}

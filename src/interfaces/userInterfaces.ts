@@ -3,7 +3,7 @@ export interface Iuser {
     ID: number,
     Name: string,
     Email: string,
-    type: "A" | "N",
+    type: "A" | "N" | " ",
     password?: string,
     confirm_password?: string,
 }
@@ -12,7 +12,7 @@ export const initUser : Iuser = {
     ID: 1,
     Name: "",
     Email: "",
-    type: "A",
+    type: " ",
     password: "",
     confirm_password: "",  
 }

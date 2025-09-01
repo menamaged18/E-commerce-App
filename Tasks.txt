@@ -3,12 +3,13 @@ tasks that i need to do:
     2- in product details page make the recommeded products shows the favourites and inCart --> done
     3- Account 
         3.1 two types of accounts:
-            3.1.1 account for a normal user 
-            3.1.2 account for an admin 
+            3.1.1 account for a normal user --> done
+            3.1.2 account for an admin --> done
                 
-        3.2 signUp/Login for an admin 
+        3.2 signUp/Login for an admin --> done
         3.3 dashboard for the admin (not a priority right now)
     4- Edit the Account in the navBar 
+    4- make the admin add and remove and edit products
 
          
 

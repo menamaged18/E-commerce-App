@@ -103,6 +103,21 @@ const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
+    deleteProduct: (state, action) => {
+      const productIdToDelete = action.payload;
+      state.productsState.products = state.productsState.products.filter(
+        (product) => product.id !== productIdToDelete
+      );
+    },
+    editProduct: (state, action) => {
+      const updatedProduct = action.payload;
+      const index = state.productsState.products.findIndex(
+        (product) => product.id === updatedProduct.id
+      );
+      if (index !== -1) {
+        state.productsState.products[index] = updatedProduct;
+      }
+    },
   },
   extraReducers(builder) {
     builder
@@ -154,4 +169,5 @@ const productSlice = createSlice({
   },
 });
 
+export const {deleteProduct, editProduct} = productSlice.actions;
 export default productSlice.reducer;

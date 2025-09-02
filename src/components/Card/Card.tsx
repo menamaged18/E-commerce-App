@@ -1,10 +1,12 @@
 'use client'
 import { Product } from "@/interfaces/types";
-import  ActionButtons  from "@/components/ActionButtons/ActionButtons";
+import ActionButtons from "@/components/ActionButtons/ActionButtons";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from 'react';
-import {useAppSelector} from "@/Hooks/reduxHooks";
+import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks";
+import { deleteProduct } from '@/data/reducers/ProductReducers';
+import EditModal from "./EditModal";
 
 interface Iprops {
   product: Product
@@ -12,8 +14,8 @@ interface Iprops {
   width: number
   isFav: boolean
   inCart: boolean
-  onFavToggle?: () => void; // new
-  onInCartToggle?: () => void; // new
+  onFavToggle?: () => void;
+  onInCartToggle?: () => void;
 }
 
 const colors = [
@@ -23,10 +25,16 @@ const colors = [
 ];
 
 function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggle}: Iprops) {
+  const dispatch = useAppDispatch();
   const userType = useAppSelector( (state) => state.user.staticData.type );
-  const [selectedColor, setSelectedColor] = useState<string | null>(colors[0].name);
+  const [selectedColor, setSelectedColor] = useState<string>(colors[0].name);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
-  // This function handles the color selection and stops the event propagation
+  const handleDelete = (productId: number) => {
+    dispatch(deleteProduct(productId));
+    console.log(`deleted product with id: ${productId}`)
+  };
+
   const handleColorClick = (event: React.MouseEvent, colorName: string) => {
     event.stopPropagation();
     setSelectedColor(colorName);
@@ -40,39 +48,49 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
       width: `${width}px` 
     }}
   >
-    <Link
-      href={`/ProductDetails/${product.id}`}
-    >
-    {/* Image section with hover actions */}
-    <div className="h-40 w-full overflow-hidden rounded-lg relative group">
-      <Image
-        src={product.imagePath}
-        alt="card image"
-        width={210}
-        height={160}
-        className="w-full h-full object-cover transform transition duration-500 group-hover:scale-110"
-      />
-      {/* Action buttons that appear on hover */}
-      {(userType === "N" || userType === " " ) && 
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <ActionButtons productid={product.id} isFav={isFav} inCart={inCart} onFavToggle={onFavToggle} onInCartToggle={onInCartToggle} />
-        </div>  
-      }
-    </div>
+    {/* MAIN CONTENT: flexible, will expand when admin buttons are absent */}
+    <div className="flex flex-col mb-4 flex-1 min-h-0">
+      {/* Make the clickable area take the remaining space and allow children to scroll/shrink */}
+      <Link href={`/ProductDetails/${product.id}`} className="flex flex-col flex-1 min-h-0">
+        {/* Image — uses aspect box instead of fixed height so it scales with the card */}
+        <div
+          className="w-full overflow-hidden rounded-lg relative group mb-2 flex-shrink-0"
+          style={{ paddingBottom: '60%' }} // controls image aspect ratio (60% of width)
+        >
+          <Image
+            src={product.imagePath}
+            alt="card image"
+            fill
+            style={{ objectFit: 'cover' }}
+            className="transform transition duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, 210px"
+          />
+          {(userType === "N" || userType === " " ) && 
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <ActionButtons 
+                productid={product.id} 
+                isFav={isFav} 
+                inCart={inCart} 
+                onFavToggle={onFavToggle} 
+                onInCartToggle={onInCartToggle} 
+              />
+            </div>  
+          }
+        </div>
 
+        {/* Title */}
+        <div className="mb-1 flex-shrink-0">
+          <h1 className="font-bold text-lg transition duration-300 hover:text-blue-500 line-clamp-1">{product.title}</h1>
+        </div>
 
-      {/* Title section */}
-      <div className="pt-1">
-        <h1 className="font-bold text-lg transition duration-300 hover:text-blue-500">{product.title}</h1>
-      </div>
+        {/* Description */}
+        <div className="text-sm overflow-hidden flex-1 min-h-0 mb-2">
+          <p className="line-clamp-6">{product.description}</p>
+        </div>
+      </Link>
 
-      {/* Description section */}
-      <div className="pt-1 h-24 overflow-hidden">
-        <p className="pt-1 text-sm line-clamp-3">{product.description}</p>
-      </div>
-    </Link>
-      {/* Color options section */}
-      <div className="flex flex-row gap-1">
+      {/* Color options — fixed-size row */}
+      <div className="flex flex-row gap-1 mb-2 flex-shrink-0">
         {colors.map((color, index) => (
           <div
             key={index}
@@ -84,22 +102,38 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
         ))}
       </div>
 
-      {/* Price and category section */}
-      <div className="flex flex-row justify-between pt-3">
+      {/* Price & category — fixed area at bottom of main content */}
+      <div className="flex flex-row justify-between items-center flex-shrink-0">
         <h2 className="text-blue-500 font-bold transition duration-300 hover:text-blue-700">{product.price} $</h2>
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-1 items-center">
           <Image 
             src={product.imagePath}
             alt="Category image"
             height={100}
             width={100}
-            className="rounded-full h-8 w-8 transition duration-300 hover:opacity-75"
+            className="rounded-full h-6 w-6 transition duration-300 hover:opacity-75"
           />
-          <p className="transition duration-300 hover:text-gray-500">{product.category}</p>
+          <p className="transition duration-300 hover:text-gray-500 text-sm">{product.category}</p>
         </div>
       </div>
+    </div>
+
+    {/* Admin buttons */}
+    {userType === 'A' && 
+      <div className="flex flex-row justify-between gap-2 mt-auto">
+        <button className="flex-1 bg-blue-700 hover:bg-blue-800 py-2 text-white rounded-lg cursor-pointer"
+          onClick={() => setIsEditOpen(true)}
+        >Edit</button>
+        <button className="flex-1 bg-red-700 hover:bg-red-800 py-2 text-white rounded-lg cursor-pointer"
+          onClick={()=> handleDelete(product.id)}
+        >Remove</button>
+      </div>
+    }
+
+    <EditModal product={product} isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
+
   </div>
   );
 }
 
-export default Card
+export default Card;

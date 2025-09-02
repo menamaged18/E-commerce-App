@@ -8,8 +8,9 @@ tasks that i need to do:
                 
         3.2 signUp/Login for an admin --> done
         3.3 dashboard for the admin (not a priority right now)
-    4- Edit the Account in the navBar 
+    4- Edit the Account in the navBar --> done
     5- make the admin add and remove and edit products
+    6- there is an error in the design of the recommeded products in product details 
 
          
 

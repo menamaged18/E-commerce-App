@@ -4,6 +4,7 @@ import  ActionButtons  from "@/components/ActionButtons/ActionButtons";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from 'react';
+import {useAppSelector} from "@/Hooks/reduxHooks";
 
 interface Iprops {
   product: Product
@@ -22,20 +23,26 @@ const colors = [
 ];
 
 function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggle}: Iprops) {
+  const userType = useAppSelector( (state) => state.user.staticData.type );
   const [selectedColor, setSelectedColor] = useState<string | null>(colors[0].name);
 
+  // This function handles the color selection and stops the event propagation
+  const handleColorClick = (event: React.MouseEvent, colorName: string) => {
+    event.stopPropagation();
+    setSelectedColor(colorName);
+  };
+
   return (
+  <div 
+    className="container p-3 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110 relative"
+    style={{
+      height: `${height}px`,
+      width: `${width}px` 
+    }}
+  >
     <Link
       href={`/ProductDetails/${product.id}`}
     >
-    <div 
-      className="container p-3 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110 relative"
-      style={{
-        height: `${height}px`,
-        width: `${width}px` 
-      }}
-      >
-
     {/* Image section with hover actions */}
     <div className="h-40 w-full overflow-hidden rounded-lg relative group">
       <Image
@@ -45,12 +52,14 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
         height={160}
         className="w-full h-full object-cover transform transition duration-500 group-hover:scale-110"
       />
-      
       {/* Action buttons that appear on hover */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <ActionButtons productid={product.id} isFav={isFav} inCart={inCart} onFavToggle={onFavToggle} onInCartToggle={onInCartToggle} />
-      </div>
+      {(userType === "N" || userType === " " ) && 
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <ActionButtons productid={product.id} isFav={isFav} inCart={inCart} onFavToggle={onFavToggle} onInCartToggle={onInCartToggle} />
+        </div>  
+      }
     </div>
+
 
       {/* Title section */}
       <div className="pt-1">
@@ -61,7 +70,7 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
       <div className="pt-1 h-24 overflow-hidden">
         <p className="pt-1 text-sm line-clamp-3">{product.description}</p>
       </div>
-
+    </Link>
       {/* Color options section */}
       <div className="flex flex-row gap-1">
         {colors.map((color, index) => (
@@ -70,7 +79,7 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
             className={`w-5 h-5 ${color.value} rounded-full cursor-pointer border-2 transform transition duration-200 hover:scale-125 ${
               selectedColor === color.name ? 'border-black' : 'border-transparent'
             }`}
-            onClick={() => setSelectedColor(color.name)}
+            onClick={(event) => handleColorClick(event, color.name)}
           />
         ))}
       </div>
@@ -89,8 +98,7 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
           <p className="transition duration-300 hover:text-gray-500">{product.category}</p>
         </div>
       </div>
-    </div>
-    </Link>
+  </div>
   );
 }
 

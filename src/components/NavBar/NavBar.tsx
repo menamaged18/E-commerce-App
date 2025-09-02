@@ -16,15 +16,16 @@ import AddProductElement from "./NavBarElements/AddProductElement";
 
 function Navbar() {
   const userType = useAppSelector( (state) => state.user.staticData.type );
-  // console.log(userType)
   const [isOpen, setIsOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const navbarHeight = 64; // Define the height of the navbar
+  const navbarHeight = 64; // Height of the navbar 
+  const marginTop = 24; 
+  const placeholderHeight = marginTop + navbarHeight; // Full space to reserve when sticky
 
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
-      setIsSticky(offset > 64);
+      setIsSticky(offset > marginTop); // Trigger at the navbar's original top position
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -50,22 +51,20 @@ function Navbar() {
         </li>
       );
     }
-
-    // Return null if no conditions are met to avoid rendering anything.
     return null;
   };
 
   return (
     <>
-      {/* Wrapper to maintain space when navbar is fixed. --> **this is very important** */}
-      <div style={{ height: isSticky ? navbarHeight : "auto" }}></div>
+      {/* Placeholder to maintain space when navbar is fixed */}
+      <div style={{ height: isSticky ? `${placeholderHeight}px` : 0 }}></div> {/* this is very important because it prevents toggling between sticky and not sticky */}
 
       <nav
         className={`
           ${isSticky ? "fixed top-0 left-0 right-0 w-full" : "relative mt-6 mx-8 rounded-4xl hover:scale-105"}
           bg-gray-900 text-white shadow-sm z-50 transition-all duration-300 ease-in-out 
         `}
-        style={{ height: navbarHeight }}
+        style={{ height: `${navbarHeight}px` }}
       >
         <div className="container px-4 py-3 flex justify-between items-center">
           <Link href="/" className="ml-8 lg:ml-20 text-lg font-bold flex items-center space-x-2">
@@ -89,10 +88,6 @@ function Navbar() {
             <li>
               <HomeElement />
             </li>
-            {/* will be added later if needed */}
-            {/* <li>
-              <AboutElement />
-            </li> */}
             {renderNavItems(userType)}
             <NavbarDropdown />
           </ul>

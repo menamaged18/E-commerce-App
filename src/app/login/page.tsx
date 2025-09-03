@@ -129,9 +129,9 @@ export default function Page() {
 
         <div className="mt-8 pt-5 border-t border-gray-100">
           <p className="text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link 
-              href="/signUp" 
+            Don&apos;t have an account?{' '}
+            <Link
+              href="/signUp"
               className="font-medium text-blue-600 hover:text-blue-800 transition duration-150"
             >
               Create account

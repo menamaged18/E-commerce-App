@@ -8,7 +8,7 @@ import Card from "@/components/Card/Card";
 import { getFavs, getinCart, addToCart, addToFav} from "@/utils/addTo";
 
 
-export default function PageData({ productid }: { productid: Number }) {
+export default function PageData({ productid }: { productid: number }) {
   const userType = useAppSelector( (state) => state.user.staticData.type );
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [inCart, setInCart] = useState<boolean>(false);

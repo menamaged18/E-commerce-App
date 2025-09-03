@@ -5,6 +5,7 @@ import { getProductsByIds } from "@/data/reducers/ProductReducers";
 import { useEffect, useState } from "react";
 import HorizontalCard from "@/components/Card/HorizontalCard";
 import CheckoutSummary from "@/components/Checkout/CheckoutSummary";
+import Link from "next/link";
 
 function Page() { 
   const dispatch = useAppDispatch();
@@ -51,10 +52,10 @@ function Page() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H18.6L22 13M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m0-4h18" />
         </svg>
         <p className="text-2xl text-gray-500 mt-6 font-bold">Your cart is empty.</p>
-        <p className="text-lg text-gray-400 mt-2">Looks like you haven't added anything to your cart yet.</p>
-        <a href="/" className="mt-8 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">
+        <p className="text-lg text-gray-400 mt-2">Looks like you haven&apos;t added anything to your cart yet.</p>
+        <Link href="/" className="mt-8 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">
           Start Shopping
-        </a>
+        </Link>
       </div>
     );
   } else {

@@ -7,7 +7,7 @@ interface Iprops {
 }
 
 export default function CustomDialog({closedBtitle}:Iprops) {
-  let [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   function open() {
     setIsOpen(true)

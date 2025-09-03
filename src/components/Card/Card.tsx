@@ -88,7 +88,7 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
         </div>
 
         {/* Description - dynamic line clamp based on card height */}
-        <div className="text-sm overflow-hidden flex-1 min-h-0 mb-2">
+        <div className="text-sm overflow-hidden flex-1 min-h-0 mb-4">
           <p className={`line-clamp-${descriptionLines}`}>{product.description}</p>
         </div>
       </Link>

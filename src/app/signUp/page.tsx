@@ -1,14 +1,14 @@
 "use client";
 import React, {useState} from 'react';
 // import { useTypedDispatch } from '@/data/store/store';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 // import {
 //   addUser,
 // } from '@/data/reducers/User';
 
 function Page() {
-  const router = useRouter();
+  // const router = useRouter();
   const inputStyle = 'mt-2 p-4 w-full rounded-lg border border-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white transition-all duration-200 text-gray-700 placeholder-gray-400';
 
   // const dispatch = useTypedDispatch();

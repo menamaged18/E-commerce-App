@@ -21,7 +21,7 @@ const initialState: IIuser = {
 export const logoutUserAsync = createAsyncThunk(
     'users/logoutUserAsync',
     async (_, { dispatch }) => {
-        // Wait for 3 seconds before dispatching the logout action
+        // Wait for 1 seconds before dispatching the logout action
         await new Promise(resolve => setTimeout(resolve, 1000));
         // Dispatch the actual reducer action to log out the user
         dispatch(users.actions.logoutUser());

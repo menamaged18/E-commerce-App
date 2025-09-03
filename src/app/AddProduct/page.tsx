@@ -45,7 +45,7 @@ const AddProductForm = () => {
     // TODO: send the data to your backend API.
     // The 'productData' state now contains all the form values,
     // including the image file in productData.image.
-    console.log("Submitting product data:", productData);
+    // console.log("Submitting product data:", productData);
     
     // upload the file and get a URL to store in your database.
     alert('Form submitted! Check the console for data.');

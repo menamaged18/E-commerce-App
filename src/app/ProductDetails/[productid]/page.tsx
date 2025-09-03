@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await fetchProductById(productId);
 
   return {
-    title: `${product?.title} - My Store`,
+    title: `${product?.title} - E-Commerce Store`,
     description: product?.description,
     openGraph: {
       title: product?.title,

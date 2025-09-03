@@ -9,6 +9,7 @@ import { getFavs, getinCart, addToCart, addToFav} from "@/utils/addTo";
 
 
 export default function PageData({ productid }: { productid: Number }) {
+  const userType = useAppSelector( (state) => state.user.staticData.type );
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [inCart, setInCart] = useState<boolean>(false);
   const favs = getFavs();
@@ -70,6 +71,7 @@ export default function PageData({ productid }: { productid: Number }) {
           </div>
           
           {/* Buttons should also be outside the flex container to wrap correctly */}
+          {(userType === "N" || userType === " " ) && 
           <div className="flex flex-col sm:flex-row gap-4 clear-left justify-center mt-2">
             <button
               onClick={handleFavBtn}
@@ -98,6 +100,7 @@ export default function PageData({ productid }: { productid: Number }) {
               {inCart ? "Remove from Cart" : "Add to Cart"}
             </button>
           </div>
+        }
         </div>
       </div>
 

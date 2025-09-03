@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { useAppDispatch } from '@/Hooks/reduxHooks';
 import { editProduct } from '@/data/reducers/ProductReducers';
 import { Product } from '@/interfaces/types';
+import Image from 'next/image'; // Import the Image component
 
 type Props = {
   product: Product;
@@ -19,6 +20,7 @@ export default function EditModal({ product, isOpen, onClose }: Props) {
     description: product.description,
     price: product.price,
     category: product.category,
+    imagePath: product.imagePath, // Add imagePath to form data
   });
 
   // Keep state in sync if product changes
@@ -28,6 +30,7 @@ export default function EditModal({ product, isOpen, onClose }: Props) {
       description: product.description,
       price: product.price,
       category: product.category,
+      imagePath: product.imagePath,
     });
   }, [product]);
 
@@ -87,6 +90,17 @@ export default function EditModal({ product, isOpen, onClose }: Props) {
 
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Edit Product</h2>
 
+        {/* Image display */}
+        <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
+          <Image
+            src={formData.imagePath}
+            alt="Product image"
+            fill
+            style={{ objectFit: 'contain' }}
+            className="transform transition duration-500"
+          />
+        </div>
+
         <div className="space-y-3">
           <input
             name="title"
@@ -118,6 +132,14 @@ export default function EditModal({ product, isOpen, onClose }: Props) {
             onChange={handleChange}
             className="w-full p-2 border rounded-lg"
             placeholder="Category"
+          />
+          {/* Input for image URL */}
+          <input
+            name="imagePath"
+            value={formData.imagePath}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-lg"
+            placeholder="Image URL"
           />
         </div>
 

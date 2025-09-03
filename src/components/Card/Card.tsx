@@ -40,6 +40,10 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
     setSelectedColor(colorName);
   };
 
+  // Calculate dynamic values based on card height
+  const imageAspectRatio = height > 300 ? 0.6 : 0.5; 
+  const descriptionLines = height > 300 ? 5 : 1; 
+
   return (
   <div 
     className="container p-3 shadow-lg rounded-xl flex flex-col transition duration-300 hover:shadow-2xl hover:scale-110 relative"
@@ -52,10 +56,10 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
     <div className="flex flex-col mb-4 flex-1 min-h-0">
       {/* Make the clickable area take the remaining space and allow children to scroll/shrink */}
       <Link href={`/ProductDetails/${product.id}`} className="flex flex-col flex-1 min-h-0">
-        {/* Image — uses aspect box instead of fixed height so it scales with the card */}
+        {/* Image — dynamic aspect ratio based on card height */}
         <div
           className="w-full overflow-hidden rounded-lg relative group mb-2 flex-shrink-0"
-          style={{ paddingBottom: '60%' }} // controls image aspect ratio (60% of width)
+          style={{ paddingBottom: `${imageAspectRatio * 100}%` }}
         >
           <Image
             src={product.imagePath}
@@ -83,9 +87,9 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
           <h1 className="font-bold text-lg transition duration-300 hover:text-blue-500 line-clamp-1">{product.title}</h1>
         </div>
 
-        {/* Description */}
+        {/* Description - dynamic line clamp based on card height */}
         <div className="text-sm overflow-hidden flex-1 min-h-0 mb-2">
-          <p className="line-clamp-6">{product.description}</p>
+          <p className={`line-clamp-${descriptionLines}`}>{product.description}</p>
         </div>
       </Link>
 
@@ -94,7 +98,7 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
         {colors.map((color, index) => (
           <div
             key={index}
-            className={`w-5 h-5 ${color.value} rounded-full cursor-pointer border-2 transform transition duration-200 hover:scale-125 ${
+            className={`w-4 h-4 ${color.value} rounded-full cursor-pointer border-2 transform transition duration-200 hover:scale-125 ${
               selectedColor === color.name ? 'border-black' : 'border-transparent'
             }`}
             onClick={(event) => handleColorClick(event, color.name)}
@@ -104,16 +108,16 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
 
       {/* Price & category — fixed area at bottom of main content */}
       <div className="flex flex-row justify-between items-center flex-shrink-0">
-        <h2 className="text-blue-500 font-bold transition duration-300 hover:text-blue-700">{product.price} $</h2>
+        <h2 className="text-blue-500 font-bold transition duration-300 hover:text-blue-700 text-sm">{product.price} $</h2>
         <div className="flex flex-row gap-1 items-center">
           <Image 
             src={product.imagePath}
             alt="Category image"
             height={100}
             width={100}
-            className="rounded-full h-6 w-6 transition duration-300 hover:opacity-75"
+            className="rounded-full h-5 w-5 transition duration-300 hover:opacity-75"
           />
-          <p className="transition duration-300 hover:text-gray-500 text-sm">{product.category}</p>
+          <p className="transition duration-300 hover:text-gray-500 text-xs">{product.category}</p>
         </div>
       </div>
     </div>
@@ -121,10 +125,10 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
     {/* Admin buttons */}
     {userType === 'A' && 
       <div className="flex flex-row justify-between gap-2 mt-auto">
-        <button className="flex-1 bg-blue-700 hover:bg-blue-800 py-2 text-white rounded-lg cursor-pointer"
+        <button className="flex-1 bg-blue-700 hover:bg-blue-800 py-1 text-white rounded-lg cursor-pointer text-sm"
           onClick={() => setIsEditOpen(true)}
         >Edit</button>
-        <button className="flex-1 bg-red-700 hover:bg-red-800 py-2 text-white rounded-lg cursor-pointer"
+        <button className="flex-1 bg-red-700 hover:bg-red-800 py-1 text-white rounded-lg cursor-pointer text-sm"
           onClick={()=> handleDelete(product.id)}
         >Remove</button>
       </div>

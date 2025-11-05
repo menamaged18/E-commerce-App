@@ -38,9 +38,8 @@ export const getUserFavs = (userName: string): number[] => {
 
 export const itemToggleUserFav = (newProductId: number, userName: string) => {
     const userFavKey = userName + "favs";
-    // Retrieve the existing data
-    let favs = getUserFavs(userFavKey);
-
+    let favs = getUserFavs(userName);
+    
     // Check if the product is already in the fav if exists remove it if not add it
     if (!favs.includes(newProductId)) {
         favs.push(newProductId);

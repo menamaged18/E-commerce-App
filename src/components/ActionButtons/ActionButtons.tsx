@@ -21,7 +21,11 @@ function ActionButtons({productid, isFav, inCart, onFavToggled}: IActionButtonsP
             onClick={(e) => {
                 e.preventDefault();
                 setIsFavorited(!isFavorited);
-                isLoggedIn? itemToggleUserFav(productid, staticData.Name) : itemToggleGuestFav(productid);
+                if (isLoggedIn) {
+                    itemToggleUserFav(productid, staticData.Name);
+                } else {
+                    itemToggleGuestFav(productid);
+                }
                 // Triggers the parent component to refresh
                 if (onFavToggled) {
                     onFavToggled();
@@ -38,7 +42,11 @@ function ActionButtons({productid, isFav, inCart, onFavToggled}: IActionButtonsP
             onClick={(e) => {
                 e.preventDefault();
                 setInCart(!inCartC);
-                isLoggedIn? itemToggleUserCart(productid, staticData.Name) : itemToggleGuestCart(productid);
+                if (isLoggedIn) {
+                    itemToggleUserCart(productid, staticData.Name);
+                } else {
+                    itemToggleGuestCart(productid);
+                }
             }}
             className="p-1 rounded-full bg-white/80 hover:bg-white transition duration-200 "
             aria-label="Add to cart"

@@ -75,7 +75,7 @@ export default function PageData({ productid }: { productid: number }) {
           </div>
           
           {/* Buttons should also be outside the flex container to wrap correctly */}
-          {(userType === "N" || userType === " " ) && 
+          {(userType === "N" || userType === " " ) && (
           <div className="flex flex-col sm:flex-row gap-4 clear-left justify-center mt-2">
             <button
               onClick={handleFavBtn}
@@ -104,7 +104,7 @@ export default function PageData({ productid }: { productid: number }) {
               {inCart ? "Remove from Cart" : "Add to Cart"}
             </button>
           </div>
-        }
+        )}
         </div>
       </div>
 

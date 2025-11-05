@@ -23,7 +23,7 @@ function Page() {
       transferCart(staticData.Name);
       router.push("/");
     }
-  }, [isLoggedIn, prevIsLoggedIn, router]);
+  }, [isLoggedIn, prevIsLoggedIn, staticData.Name, router]);
 
   useEffect(() => {
     // 1. Get the carts *inside* the effect

@@ -25,7 +25,7 @@ function Page() {
       transferFavs(staticData.Name);
       router.push("/");
     }
-  }, [isLoggedIn, prevIsLoggedIn, router]);
+  }, [isLoggedIn, prevIsLoggedIn, staticData.Name, router]);
 
   // whenever favorites change, fetch them
   useEffect(() => {

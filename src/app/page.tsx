@@ -23,7 +23,7 @@ export default function Home() {
       // router.refresh(); // doesn't work
       window.location.reload();
     }
-  }, [isLoggedIn, prevIsLoggedIn, router]);
+  }, [isLoggedIn, prevIsLoggedIn, staticData.Name, router]);
 
   // Initial data fetch
   useEffect(() => {

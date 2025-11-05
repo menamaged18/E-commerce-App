@@ -81,7 +81,6 @@ export const getProductsByIds = createAsyncThunk(
   }
 );
 
-
 export const getCategoryProducts = createAsyncThunk('products/getCategoryProducts',  
   async ({ cat, excludeId }: { cat: string, excludeId: number }, thunkAPI) => {
     try{

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Product } from "@/interfaces/types";
 import Image from "next/image";
-import { addToCart } from '@/utils/addTo'; // Import removeFromCart
 
 interface Iprops {
   product: Product
@@ -10,14 +9,13 @@ interface Iprops {
   isFav?: boolean
   inCart?: boolean
   onFavToggle?: () => void;
-  onInCartToggle?: () => void; // This callback will trigger a refresh
+  onInCartToggle?: (productId: number) => void; // This callback will trigger a refresh
 }
 
 function HorizontalCard({product, onInCartToggle}: Iprops) {
     const handleRemove = () => {
-        addToCart(product.id); 
         if (onInCartToggle) {
-            onInCartToggle(); // Trigger parent component to refresh
+            onInCartToggle(product.id); // Trigger parent component to refresh
         }
     }
     

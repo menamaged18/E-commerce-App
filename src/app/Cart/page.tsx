@@ -1,23 +1,70 @@
 "use client";
-import { getinCart } from "@/utils/addTo";
+import { getGuestCart, getUserCart, transferCart, mergeUserCartWithGuestCart, 
+        clearGuestCart, itemToggleGuestCart, itemToggleUserCart } from "@/utils/addTo";
 import { useAppSelector, useAppDispatch } from "@/Hooks/reduxHooks";
 import { getProductsByIds } from "@/data/reducers/ProductReducers";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import { usePrevious } from '@/Hooks/usePrevious';
 import HorizontalCard from "@/components/Card/HorizontalCard";
 import CheckoutSummary from "@/components/Checkout/CheckoutSummary";
 import Link from "next/link";
 
-function Page() { 
+function Page() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { products, status, error } = useAppSelector((state) => state.products.selectedProductsState);
-  const [cart, setCart] = useState<number[]>(getinCart());
+  const { staticData, isLoggedIn } = useAppSelector(state => state.user);
+
+  const prevIsLoggedIn = usePrevious(isLoggedIn);
 
   useEffect(() => {
-    dispatch(getProductsByIds(cart));
-  }, [dispatch, cart]);
+    if (prevIsLoggedIn === true && isLoggedIn === false) {
+      transferCart(staticData.Name);
+      router.push("/");
+    }
+  }, [isLoggedIn, prevIsLoggedIn, router]);
 
-  const handleInCartToggle = () => {
-    setCart(getinCart());
+  useEffect(() => {
+    // 1. Get the carts *inside* the effect
+    const guestCart = getGuestCart();
+    const hasGuestCart = guestCart.length > 0;
+
+    // Case 1: User is LOGGED IN
+    if (isLoggedIn) {
+      const userCart = getUserCart(staticData.Name);
+
+      // Sub-case 1.1: User is logged in AND has a guest cart
+      if (hasGuestCart) {
+        // Ask the user to merge
+        if (window.confirm("Merge guest cart with your cart?")) {
+          mergeUserCartWithGuestCart(staticData.Name);
+          dispatch(getProductsByIds(getUserCart(staticData.Name)));
+        } else {
+          clearGuestCart();
+          dispatch(getProductsByIds(userCart));
+        }
+      } else {
+        // User is logged in, NO guest cart.
+        dispatch(getProductsByIds(userCart));
+      }
+    } else {
+      // Case 2: User is NOT LOGGED IN
+      dispatch(getProductsByIds(guestCart));
+    }
+    
+  }, [isLoggedIn, staticData.Name, dispatch]);
+
+  const handleInCartToggle = (productId: number) => {
+    let currentCartIds: number[];
+    if (isLoggedIn) {
+      itemToggleUserCart(productId, staticData.Name);
+      currentCartIds = getUserCart(staticData.Name); 
+    } else {
+      itemToggleGuestCart(productId);
+      currentCartIds = getGuestCart(); 
+    }
+    dispatch(getProductsByIds(currentCartIds)); 
   };
 
   // Calculate subtotal

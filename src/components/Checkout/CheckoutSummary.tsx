@@ -1,4 +1,5 @@
 "use client";
+import { useAppSelector } from '@/Hooks/reduxHooks';
 import React, { useState } from 'react';
 
 interface CheckoutSummaryProps {
@@ -7,6 +8,7 @@ interface CheckoutSummaryProps {
 
 const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isLoggedIn } = useAppSelector(state => state.user);
   
   // Calculations
   const taxRate = 0.14; 
@@ -15,7 +17,11 @@ const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ subtotal }) => {
   const total = subtotal + tax + shipping;
 
   const handleCheckout = () => {
-    setIsModalOpen(true);
+    if(isLoggedIn){
+      setIsModalOpen(true);
+    }else{
+      alert("you need to be logged in first");
+    }
   };
 
   const closeModal = () => {

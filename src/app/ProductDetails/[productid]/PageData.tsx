@@ -5,27 +5,31 @@ import { getProductById, getCategoryProducts } from "@/data/reducers/ProductRedu
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
 import Card from "@/components/Card/Card";
-import { getFavs, getinCart, addToCart, addToFav} from "@/utils/addTo";
+import { getGuestFavs, getGuestCart, itemToggleGuestCart, itemToggleGuestFav, 
+         getUserFavs, getUserCart, itemToggleUserFav, itemToggleUserCart} from "@/utils/addTo";
 
 
 export default function PageData({ productid }: { productid: number }) {
   const userType = useAppSelector( (state) => state.user.staticData.type );
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [inCart, setInCart] = useState<boolean>(false);
-  const favs = getFavs();
-  const incart = getinCart();
+  const {isLoggedIn , staticData} = useAppSelector(s => s.user);
+  const favs = isLoggedIn? getUserFavs(staticData.Name) : getGuestFavs();
+  const incart = isLoggedIn? getUserCart(staticData.Name) : getGuestCart();
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.products.selectedProductState.product);
   const recomendedProducts = useAppSelector((state) => state.products.productsState.products);
 
   const handleFavBtn = () =>{
     setIsFavorited(!isFavorited);
-    addToFav(Number(productid));
+    isLoggedIn? itemToggleUserFav(Number(productid), staticData.Name)
+                  : itemToggleGuestFav(Number(productid));
   }
 
   const handleInCartBtn = () =>{
     setInCart(!inCart);
-    addToCart(Number(productid));
+    isLoggedIn? itemToggleUserCart(Number(productid), staticData.Name)
+                : itemToggleGuestCart(Number(productid));
   }
 
   useEffect(() => {

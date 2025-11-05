@@ -3,13 +3,28 @@ import { useEffect } from "react";
 import Card from "../components/Card/Card";
 import {useAppSelector, useAppDispatch} from "@/Hooks/reduxHooks";
 import { getAllProducts } from "@/data/reducers/ProductReducers";
-import { getFavs, getinCart} from "@/utils/addTo";
+import { getGuestFavs, getGuestCart, getUserCart, getUserFavs} from "@/utils/addTo";
+import { usePrevious } from "@/Hooks/usePrevious";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const staticData = useAppSelector((state) => state.products.productsState.products);
-  const favs = getFavs();
-  const incart = getinCart();
+  const productsData = useAppSelector((state) => state.products.productsState.products);
+  const { isLoggedIn, staticData } = useAppSelector((state) => state.user);
+  const favs = isLoggedIn ? getUserFavs(staticData.Name) : getGuestFavs();
+  const incart = isLoggedIn ? getUserCart(staticData.Name) : getGuestCart();
+
+  const prevIsLoggedIn = usePrevious(isLoggedIn);
+
+  useEffect(() => {
+    if (prevIsLoggedIn === true && isLoggedIn === false) {
+      // router.push("/"); // doestn't work
+      // router.refresh(); // doesn't work
+      window.location.reload();
+    }
+  }, [isLoggedIn, prevIsLoggedIn, router]);
+
   // Initial data fetch
   useEffect(() => {
       dispatch(getAllProducts());
@@ -18,7 +33,7 @@ export default function Home() {
     <div className="container mx-auto">
       {/* <CustomDialog  closedBtitle="Add product"/> */}
       <div className="p-10 flex flex-row flex-wrap gap-4 justify-center max-w-7xl mx-auto">
-        {staticData.map((product) => (
+        {productsData.map((product) => (
           <Card 
             key={product.id}
             product = {product}

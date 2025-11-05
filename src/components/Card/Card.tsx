@@ -14,8 +14,7 @@ interface Iprops {
   width: number
   isFav: boolean
   inCart: boolean
-  onFavToggle?: () => void;
-  onInCartToggle?: () => void;
+  onFavToggled?: () => void;
 }
 
 const colors = [
@@ -24,7 +23,7 @@ const colors = [
     { name: 'Orange', value: 'bg-orange-500' },
 ];
 
-function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggle}: Iprops) {
+function Card({product, height, width, isFav, inCart, onFavToggled}: Iprops) {
   const dispatch = useAppDispatch();
   const userType = useAppSelector( (state) => state.user.staticData.type );
   const [selectedColor, setSelectedColor] = useState<string>(colors[0].name);
@@ -74,9 +73,8 @@ function Card({product, height, width, isFav, inCart, onFavToggle, onInCartToggl
               <ActionButtons 
                 productid={product.id} 
                 isFav={isFav} 
-                inCart={inCart} 
-                onFavToggle={onFavToggle} 
-                onInCartToggle={onInCartToggle} 
+                inCart={inCart}
+                onFavToggled={onFavToggled} 
               />
             </div>  
           }

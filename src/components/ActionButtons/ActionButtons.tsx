@@ -1,17 +1,18 @@
 'use client';
 import { useState } from "react";
 import { Heart, ShoppingCart } from 'lucide-react';
-import { addToFav, addToCart } from "@/utils/addTo";
+import { itemToggleGuestFav, itemToggleGuestCart, itemToggleUserCart, itemToggleUserFav } from "@/utils/addTo";
+import { useAppSelector } from "@/Hooks/reduxHooks";
 
 interface IActionButtonsProps {
   productid: number;
   isFav: boolean;
   inCart: boolean;
-  onFavToggle?: () => void; // new
-  onInCartToggle?: () => void; // new
+  onFavToggled?: () => void;
 }
 
-function ActionButtons({productid, isFav, inCart, onFavToggle, onInCartToggle}: IActionButtonsProps) {
+function ActionButtons({productid, isFav, inCart, onFavToggled}: IActionButtonsProps) {
+    const {isLoggedIn, staticData} = useAppSelector(state => state.user)
     const [isFavorited, setIsFavorited] = useState<boolean>(isFav);
     const [inCartC, setInCart] = useState<boolean>(inCart);
   return (
@@ -20,8 +21,11 @@ function ActionButtons({productid, isFav, inCart, onFavToggle, onInCartToggle}: 
             onClick={(e) => {
                 e.preventDefault();
                 setIsFavorited(!isFavorited);
-                addToFav(productid);
-                if (onFavToggle) onFavToggle(); // new
+                isLoggedIn? itemToggleUserFav(productid, staticData.Name) : itemToggleGuestFav(productid);
+                // Triggers the parent component to refresh
+                if (onFavToggled) {
+                    onFavToggled();
+                }
             }}
             className="p-1 rounded-full bg-white/80 hover:bg-white transition duration-200"
             aria-label="Add to favorites"
@@ -34,8 +38,7 @@ function ActionButtons({productid, isFav, inCart, onFavToggle, onInCartToggle}: 
             onClick={(e) => {
                 e.preventDefault();
                 setInCart(!inCartC);
-                addToCart(productid);
-                if (onInCartToggle) onInCartToggle();
+                isLoggedIn? itemToggleUserCart(productid, staticData.Name) : itemToggleGuestCart(productid);
             }}
             className="p-1 rounded-full bg-white/80 hover:bg-white transition duration-200 "
             aria-label="Add to cart"

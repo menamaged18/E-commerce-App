@@ -22,14 +22,20 @@ export default function PageData({ productid }: { productid: number }) {
 
   const handleFavBtn = () =>{
     setIsFavorited(!isFavorited);
-    isLoggedIn? itemToggleUserFav(Number(productid), staticData.Name)
-                  : itemToggleGuestFav(Number(productid));
+    if(isLoggedIn){
+      itemToggleUserFav(Number(productid), staticData.Name);
+    }else{
+      itemToggleGuestFav(Number(productid));
+    }
   }
 
   const handleInCartBtn = () =>{
     setInCart(!inCart);
-    isLoggedIn? itemToggleUserCart(Number(productid), staticData.Name)
-                : itemToggleGuestCart(Number(productid));
+    if(isLoggedIn){
+      itemToggleUserCart(Number(productid), staticData.Name);
+    }else{
+      itemToggleGuestCart(Number(productid));
+    }
   }
 
   useEffect(() => {
